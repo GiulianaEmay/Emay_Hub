@@ -7,6 +7,7 @@ import {
 import { useAuth } from "../lib/auth";
 import { api } from "../lib/api";
 import { toast } from "sonner";
+import { EMAY_LOGO_URL } from "../lib/brand";
 
 const nav = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard, testid: "nav-dashboard" },
@@ -101,12 +102,8 @@ export default function Layout() {
     <div className="min-h-screen bg-[#FAFAFB] flex">
       {/* Sidebar */}
       <aside className="w-[260px] shrink-0 bg-white border-r border-slate-100 flex flex-col" data-testid="sidebar">
-        <div className="px-5 py-5 flex items-center gap-2 border-b border-slate-100">
-          <div className="w-9 h-9 emay-gradient rounded-md grid place-items-center text-white font-extrabold tracking-tight">E</div>
-          <div>
-            <div className="text-[15px] font-bold tracking-tight text-[#2D144D] leading-tight">EMAY HUB</div>
-            <div className="text-[10px] text-slate-500 uppercase tracking-wider">Integraciones & Automatizaciones</div>
-          </div>
+        <div className="px-3 py-3 flex items-center justify-center border-b border-slate-100 emay-gradient">
+          <img src={EMAY_LOGO_URL} alt="EMAY HUB" className="h-14 w-auto object-contain" />
         </div>
         <nav className="flex-1 px-3 py-4 space-y-0.5 thin-scroll overflow-y-auto">
           {nav.map(n => (
@@ -168,17 +165,16 @@ export default function Layout() {
             <button
               data-testid="user-menu-btn"
               onClick={()=>setMenu(!menu)}
-              className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-lg hover:bg-slate-100"
+              className="flex items-center gap-2 p-1 rounded-full hover:bg-slate-100"
             >
               {user?.picture ? (
-                <img src={user.picture} alt="" className="w-7 h-7 rounded-full" />
+                <img src={user.picture} alt="" className="w-8 h-8 rounded-full" />
               ) : (
-                <div className="w-7 h-7 rounded-full emay-gradient grid place-items-center text-white text-xs font-bold">
+                <div className="w-8 h-8 rounded-full emay-gradient grid place-items-center text-white text-xs font-bold">
                   {user?.name?.[0] || "?"}
                 </div>
               )}
-              <span className="text-sm font-medium text-slate-700 max-w-[140px] truncate">{user?.name || "Usuario"}</span>
-              <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+              <ChevronDown className="w-3.5 h-3.5 text-slate-400 mr-1" />
             </button>
             {menu && (
               <div className="absolute right-0 mt-2 w-52 bg-white rounded-lg border border-slate-200 shadow-xl overflow-hidden z-50">
@@ -199,7 +195,7 @@ export default function Layout() {
           </div>
         </header>
 
-        <main className="flex-1 p-6 sm:p-8 max-w-[1400px] w-full mx-auto" data-testid="main-content">
+        <main className="flex-1 p-4 sm:p-5 max-w-[1500px] w-full mx-auto" data-testid="main-content">
           <Outlet />
         </main>
       </div>

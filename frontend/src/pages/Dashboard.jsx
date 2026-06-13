@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { api } from "@/lib/api";
-import { StatCard, SectionTitle, Pill } from "@/components/UI";
+import { Pill } from "@/components/UI";
 import {
-  Users, Briefcase, ListTodo, LifeBuoy, TrendingUp, Sparkles, Building2, Activity
+  Users, Briefcase, ListTodo, LifeBuoy, TrendingUp, Sparkles, Building2,
+  Activity, DollarSign, UsersRound
 } from "lucide-react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RTooltip, ResponsiveContainer,
-  PieChart, Pie, Cell, Legend, LineChart, Line, FunnelChart, Funnel, LabelList
+  PieChart, Pie, Cell, Legend
 } from "recharts";
 
 const COLORS = ["#2D144D", "#4B2E83", "#6D4CC9", "#A38BFF", "#C7B8FF", "#E2DAFA", "#F5F3FF"];
@@ -20,6 +21,20 @@ const PROJ_LABELS = {
   qa: "QA", implementacion: "Implementación", capacitacion: "Capacitación", cerrado: "Cerrado"
 };
 
+function MiniKPI({ label, value, icon: Icon, testid, accent = "#2D144D" }) {
+  return (
+    <div className="emay-card px-4 py-3 flex items-center gap-3" data-testid={testid}>
+      <div className="w-9 h-9 rounded-md bg-[#F5F3FF] grid place-items-center shrink-0" style={{ color: accent }}>
+        <Icon className="w-4 h-4" />
+      </div>
+      <div className="min-w-0 flex-1">
+        <div className="text-[10px] uppercase tracking-wider text-slate-500 font-semibold leading-tight truncate">{label}</div>
+        <div className="text-xl font-bold tracking-tight text-slate-900 leading-tight mt-0.5">{value}</div>
+      </div>
+    </div>
+  );
+}
+
 export default function Dashboard() {
   const [stats, setStats] = useState(null);
   const [activities, setActivities] = useState([]);
@@ -29,7 +44,7 @@ export default function Dashboard() {
       try {
         const [s, a] = await Promise.all([
           api.get("/dashboard/stats"),
-          api.get("/activities?limit=10"),
+          api.get("/activities?limit=8"),
         ]);
         setStats(s.data);
         setActivities(a.data);
@@ -42,137 +57,137 @@ export default function Dashboard() {
   }
 
   const funnel = stats.funnel.map(f => ({ name: ETAPA_LABELS[f.etapa] || f.etapa, value: f.total }));
-  const projStates = stats.project_states.map(p => ({ name: PROJ_LABELS[p.estado] || p.estado, total: p.total }));
+  const projStates = stats.project_states.filter(p=>p.total>0).map(p => ({ name: PROJ_LABELS[p.estado] || p.estado, total: p.total }));
 
   return (
-    <div className="space-y-8" data-testid="dashboard-page">
-      <SectionTitle
-        title="Dashboard Ejecutivo"
-        subtitle="Estado integral de EMAY Solution"
-      />
-
-      {/* KPIs */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard label="Prospectos Nuevos" value={stats.prospectos_nuevos} icon={Sparkles} testid="kpi-prospectos" />
-        <StatCard label="Negociaciones" value={stats.negociaciones} icon={TrendingUp} testid="kpi-negociaciones" />
-        <StatCard label="Clientes Activos" value={stats.clientes_activos} icon={Building2} testid="kpi-clientes" />
-        <StatCard label="Proyectos Activos" value={stats.proyectos_activos} icon={Briefcase} testid="kpi-proyectos" />
-        <StatCard label="Tareas Pendientes" value={stats.tareas_pendientes} icon={ListTodo} testid="kpi-tareas" />
-        <StatCard label="Tickets Abiertos" value={stats.tickets_abiertos} icon={LifeBuoy} testid="kpi-tickets" />
-        <StatCard label="Ventas Estimadas" value={`$ ${stats.ventas_estimadas.toLocaleString()}`} icon={TrendingUp} testid="kpi-ventas" />
-        <StatCard label="Equipo activo" value={stats.team_productivity.length || 0} icon={Users} testid="kpi-team" />
+    <div className="space-y-4" data-testid="dashboard-page">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Dashboard</h1>
+          <p className="text-xs text-slate-500">Estado integral de EMAY Solution</p>
+        </div>
+        <div className="text-xs text-slate-400">
+          {new Date().toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "long" })}
+        </div>
       </div>
 
-      {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="emay-card p-6 lg:col-span-2">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <div className="text-[11px] uppercase tracking-wider text-slate-500 font-semibold">Embudo comercial</div>
-              <h3 className="text-lg font-semibold tracking-tight mt-1">Pipeline por etapa</h3>
-            </div>
+      {/* KPIs - 4 cols, 2 rows compact */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <MiniKPI label="Prospectos" value={stats.prospectos_total} icon={Sparkles} testid="kpi-prospectos" accent="#6D4CC9" />
+        <MiniKPI label="Negociaciones" value={stats.negociaciones} icon={TrendingUp} testid="kpi-negociaciones" accent="#4B2E83" />
+        <MiniKPI label="Clientes activos" value={stats.clientes_activos} icon={Building2} testid="kpi-clientes" accent="#2D144D" />
+        <MiniKPI label="Proyectos activos" value={stats.proyectos_activos} icon={Briefcase} testid="kpi-proyectos" accent="#6D4CC9" />
+        <MiniKPI label="Tareas pendientes" value={stats.tareas_pendientes} icon={ListTodo} testid="kpi-tareas" accent="#A38BFF" />
+        <MiniKPI label="Tickets abiertos" value={stats.tickets_abiertos} icon={LifeBuoy} testid="kpi-tickets" accent="#4B2E83" />
+        <MiniKPI label="Ventas estimadas" value={`$ ${Number(stats.ventas_estimadas).toLocaleString()}`} icon={DollarSign} testid="kpi-ventas" accent="#2D144D" />
+        <MiniKPI label="Equipo activo" value={stats.team_productivity.length || 0} icon={UsersRound} testid="kpi-team" accent="#6D4CC9" />
+      </div>
+
+      {/* Charts row */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+        <div className="emay-card p-4 lg:col-span-2">
+          <div className="flex items-center justify-between mb-1">
+            <div className="text-[10px] uppercase tracking-wider text-slate-500 font-semibold">Embudo comercial</div>
+            <div className="text-xs text-slate-400">Pipeline por etapa</div>
           </div>
-          <div className="h-72">
+          <div className="h-[180px]">
             <ResponsiveContainer>
-              <BarChart data={funnel}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#F1F0F5" />
-                <XAxis dataKey="name" tick={{ fontSize: 11, fill: "#6B7280" }} />
-                <YAxis tick={{ fontSize: 11, fill: "#6B7280" }} allowDecimals={false} />
-                <RTooltip />
-                <Bar dataKey="value" fill="#6D4CC9" radius={[6,6,0,0]} />
+              <BarChart data={funnel} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#F1F0F5" vertical={false} />
+                <XAxis dataKey="name" tick={{ fontSize: 10, fill: "#6B7280" }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 10, fill: "#6B7280" }} allowDecimals={false} axisLine={false} tickLine={false} />
+                <RTooltip cursor={{ fill: "#F5F3FF" }} contentStyle={{ borderRadius: 8, border: "1px solid #EAEAEA", fontSize: 12 }} />
+                <Bar dataKey="value" fill="#6D4CC9" radius={[6,6,0,0]} maxBarSize={32} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        <div className="emay-card p-6">
-          <div className="text-[11px] uppercase tracking-wider text-slate-500 font-semibold">Estado de proyectos</div>
-          <h3 className="text-lg font-semibold tracking-tight mt-1 mb-4">Distribución</h3>
-          <div className="h-72">
-            <ResponsiveContainer>
-              <PieChart>
-                <Pie data={projStates.filter(p=>p.total>0)} dataKey="total" nameKey="name" outerRadius={90} innerRadius={50}>
-                  {projStates.map((_, idx) => <Cell key={idx} fill={COLORS[idx % COLORS.length]} />)}
-                </Pie>
-                <Legend wrapperStyle={{ fontSize: 11 }} />
-                <RTooltip />
-              </PieChart>
-            </ResponsiveContainer>
+        <div className="emay-card p-4">
+          <div className="flex items-center justify-between mb-1">
+            <div className="text-[10px] uppercase tracking-wider text-slate-500 font-semibold">Estado proyectos</div>
+            <Pill color="purple">{projStates.length}</Pill>
           </div>
-        </div>
-
-        <div className="emay-card p-6">
-          <div className="text-[11px] uppercase tracking-wider text-slate-500 font-semibold">Clientes por rubro</div>
-          <h3 className="text-lg font-semibold tracking-tight mt-1 mb-4">Diversificación</h3>
-          <div className="h-64">
-            {stats.clients_by_rubro.length === 0 ? (
-              <div className="grid place-items-center h-full text-sm text-slate-400">Sin datos aún</div>
+          <div className="h-[180px]">
+            {projStates.length === 0 ? (
+              <div className="grid place-items-center h-full text-xs text-slate-400">Sin datos</div>
             ) : (
               <ResponsiveContainer>
                 <PieChart>
-                  <Pie data={stats.clients_by_rubro} dataKey="total" nameKey="rubro" outerRadius={90}>
+                  <Pie data={projStates} dataKey="total" nameKey="name" outerRadius={60} innerRadius={36} paddingAngle={2}>
+                    {projStates.map((_, idx) => <Cell key={idx} fill={COLORS[idx % COLORS.length]} />)}
+                  </Pie>
+                  <Legend wrapperStyle={{ fontSize: 10 }} iconSize={8} />
+                </PieChart>
+              </ResponsiveContainer>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom row */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+        <div className="emay-card p-4">
+          <div className="text-[10px] uppercase tracking-wider text-slate-500 font-semibold mb-1">Clientes por rubro</div>
+          <div className="h-[160px]">
+            {stats.clients_by_rubro.length === 0 ? (
+              <div className="grid place-items-center h-full text-xs text-slate-400">Sin datos</div>
+            ) : (
+              <ResponsiveContainer>
+                <PieChart>
+                  <Pie data={stats.clients_by_rubro} dataKey="total" nameKey="rubro" outerRadius={55}>
                     {stats.clients_by_rubro.map((_, idx) => <Cell key={idx} fill={COLORS[idx % COLORS.length]} />)}
                   </Pie>
-                  <Legend wrapperStyle={{ fontSize: 11 }} />
-                  <RTooltip />
+                  <Legend wrapperStyle={{ fontSize: 10 }} iconSize={8} />
                 </PieChart>
               </ResponsiveContainer>
             )}
           </div>
         </div>
 
-        <div className="emay-card p-6 lg:col-span-2">
-          <div className="text-[11px] uppercase tracking-wider text-slate-500 font-semibold">Productividad del equipo</div>
-          <h3 className="text-lg font-semibold tracking-tight mt-1 mb-4">Tareas completadas</h3>
-          <div className="h-64">
+        <div className="emay-card p-4">
+          <div className="text-[10px] uppercase tracking-wider text-slate-500 font-semibold mb-1">Productividad equipo</div>
+          <div className="h-[160px]">
             {stats.team_productivity.length === 0 ? (
-              <div className="grid place-items-center h-full text-sm text-slate-400">Sin tareas completadas aún</div>
+              <div className="grid place-items-center h-full text-xs text-slate-400">Sin datos</div>
             ) : (
               <ResponsiveContainer>
-                <BarChart data={stats.team_productivity} layout="vertical">
-                  <CartesianGrid strokeDasharray="3 3" stroke="#F1F0F5" />
-                  <XAxis type="number" tick={{ fontSize: 11, fill: "#6B7280" }} allowDecimals={false} />
-                  <YAxis type="category" dataKey="miembro" tick={{ fontSize: 11, fill: "#6B7280" }} width={120} />
+                <BarChart data={stats.team_productivity} layout="vertical" margin={{ top: 5, right: 5, left: 0, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#F1F0F5" horizontal={false} />
+                  <XAxis type="number" tick={{ fontSize: 10, fill: "#6B7280" }} allowDecimals={false} axisLine={false} tickLine={false} />
+                  <YAxis type="category" dataKey="miembro" tick={{ fontSize: 10, fill: "#6B7280" }} width={90} axisLine={false} tickLine={false} />
                   <RTooltip />
-                  <Bar dataKey="completadas" fill="#2D144D" radius={[0,6,6,0]} />
+                  <Bar dataKey="completadas" fill="#2D144D" radius={[0,4,4,0]} maxBarSize={18} />
                 </BarChart>
               </ResponsiveContainer>
             )}
           </div>
         </div>
-      </div>
 
-      {/* Activity */}
-      <div className="emay-card p-6">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <div className="text-[11px] uppercase tracking-wider text-slate-500 font-semibold">Actividad reciente</div>
-            <h3 className="text-lg font-semibold tracking-tight mt-1">Timeline</h3>
+        <div className="emay-card p-4 overflow-hidden">
+          <div className="flex items-center justify-between mb-2">
+            <div className="text-[10px] uppercase tracking-wider text-slate-500 font-semibold">Actividad reciente</div>
+            <span className="text-[10px] text-[#6D4CC9] flex items-center gap-1"><span className="w-1.5 h-1.5 bg-[#6D4CC9] rounded-full live-dot" /> En vivo</span>
           </div>
-          <Pill color="purple"><Activity className="w-3 h-3 mr-1 inline" />En vivo</Pill>
-        </div>
-        <div className="space-y-3">
-          {activities.length === 0 && (
-            <div className="text-sm text-slate-400 text-center py-8">Aún no hay actividad registrada.</div>
-          )}
-          {activities.map(a => (
-            <div key={a.id} className="flex items-start gap-3 py-2 border-b border-slate-50 last:border-0">
-              <div className="w-7 h-7 rounded-full emay-gradient grid place-items-center text-white text-xs font-bold shrink-0">
-                {(a.actor || "?")[0]}
-              </div>
-              <div className="flex-1">
-                <div className="text-sm text-slate-800">
-                  <span className="font-medium">{a.actor || "Sistema"}</span>
-                  <span className="text-slate-500"> {a.action} </span>
-                  <Pill color="slate">{a.entity_type}</Pill>
+          <div className="space-y-2 h-[150px] overflow-y-auto thin-scroll pr-1">
+            {activities.length === 0 && (
+              <div className="text-xs text-slate-400 text-center py-6">Sin actividad</div>
+            )}
+            {activities.slice(0,6).map(a => (
+              <div key={a.id} className="flex items-start gap-2">
+                <div className="w-6 h-6 rounded-full emay-gradient grid place-items-center text-white text-[10px] font-bold shrink-0">
+                  {(a.actor || "?")[0]}
                 </div>
-                <div className="text-xs text-slate-500 mt-0.5">{a.description}</div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-xs text-slate-700 truncate">
+                    <span className="font-medium">{a.actor}</span>{" "}
+                    <span className="text-slate-500">{a.action}</span>
+                  </div>
+                  <div className="text-[10px] text-slate-400 truncate">{a.description}</div>
+                </div>
               </div>
-              <div className="text-[10px] text-slate-400 whitespace-nowrap">
-                {new Date(a.created_at).toLocaleString()}
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>

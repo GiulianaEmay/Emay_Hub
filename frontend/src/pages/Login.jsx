@@ -1,5 +1,6 @@
 import React from "react";
 import { Sparkles } from "lucide-react";
+import { EMAY_LOGO_URL } from "../lib/brand";
 
 export default function Login() {
   const handleGoogle = () => {
@@ -16,10 +17,7 @@ export default function Login() {
           backgroundImage: "radial-gradient(circle at 20% 20%, rgba(255,255,255,0.15) 0, transparent 40%), radial-gradient(circle at 80% 60%, rgba(163,139,255,0.25) 0, transparent 50%)"
         }} />
         <div className="relative z-10">
-          <div className="flex items-center gap-2 mb-12">
-            <div className="w-9 h-9 bg-white rounded-md grid place-items-center text-[#2D144D] font-extrabold tracking-tight">E</div>
-            <span className="text-lg font-bold tracking-tight">EMAY HUB</span>
-          </div>
+          <img src={EMAY_LOGO_URL} alt="EMAY" className="h-24 w-auto object-contain -ml-3 mb-10 rounded-lg" />
           <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight">
             El centro operativo<br/>de EMAY Solution
           </h1>
@@ -52,9 +50,8 @@ export default function Login() {
       {/* RIGHT - login */}
       <div className="flex items-center justify-center p-8 sm:p-12 bg-white">
         <div className="w-full max-w-sm">
-          <div className="md:hidden flex items-center gap-2 mb-10">
-            <div className="w-9 h-9 emay-gradient rounded-md grid place-items-center text-white font-extrabold tracking-tight">E</div>
-            <span className="text-lg font-bold tracking-tight text-[#2D144D]">EMAY HUB</span>
+          <div className="md:hidden flex items-center justify-center mb-10 emay-gradient rounded-xl py-4">
+            <img src={EMAY_LOGO_URL} alt="EMAY" className="h-12 w-auto object-contain" />
           </div>
 
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">Bienvenido</h2>
@@ -69,9 +66,10 @@ export default function Login() {
             Continuar con Google
           </button>
 
-          <p className="mt-8 text-xs text-slate-400 text-center">
-            Al continuar aceptas los términos y políticas de EMAY Solution.
-          </p>
+          <div className="mt-12 flex flex-col items-center">
+            <img src={EMAY_LOGO_URL} alt="EMAY" className="h-16 w-auto rounded-lg shadow-sm" />
+            <p className="text-[10px] text-slate-400 mt-3 uppercase tracking-[0.18em]">Integraciones & Automatizaciones</p>
+          </div>
         </div>
       </div>
     </div>
