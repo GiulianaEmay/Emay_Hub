@@ -6,8 +6,8 @@
 @import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700,800&display=swap');
 
 :root {
-  --emay-primary: #2D144D;
-  --emay-primary-hover: #4B2E83;
+  --emay-primary: #030447;
+  --emay-primary-hover: #340b5b;
   --emay-accent-1: #6D4CC9;
   --emay-accent-2: #A38BFF;
   --emay-bg-subtle: #F5F3FF;
@@ -38,23 +38,23 @@ h1, h2, h3, h4 {
     --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
-    --primary: 265 58% 19%;       /* #2D144D */
+    --primary: 238 92% 14%;       /* #030447 */
     --primary-foreground: 0 0% 100%;
     --secondary: 252 100% 97%;
-    --secondary-foreground: 265 58% 19%;
+    --secondary-foreground: 238 92% 14%;
     --muted: 250 33% 96%;
     --muted-foreground: 220 9% 46%;
     --accent: 252 100% 97%;
-    --accent-foreground: 265 58% 19%;
+    --accent-foreground: 238 92% 14%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     --border: 0 0% 92%;
     --input: 0 0% 92%;
-    --ring: 265 50% 40%;
+    --ring: 273 80% 25%;
     --chart-1: 263 53% 54%;
     --chart-2: 252 100% 78%;
-    --chart-3: 265 58% 19%;
-    --chart-4: 261 49% 35%;
+    --chart-3: 238 92% 14%;
+    --chart-4: 273 80% 20%;
     --chart-5: 199 89% 48%;
     --radius: 0.625rem;
   }
@@ -67,7 +67,7 @@ h1, h2, h3, h4 {
 
 /* Brand utilities */
 .emay-gradient {
-  background: linear-gradient(135deg, #2D144D 0%, #4B2E83 60%, #6D4CC9 100%);
+  background: linear-gradient(135deg, #030447 0%, #340b5b 100%);
 }
 
 .emay-card {
@@ -112,10 +112,10 @@ h1, h2, h3, h4 {
   transition: all .15s ease;
   cursor: pointer;
 }
-.sidebar-link:hover { background: #F5F3FF; color: #2D144D; }
+.sidebar-link:hover { background: #F5F3FF; color: #030447; }
 .sidebar-link.active {
   background: #F5F3FF;
-  color: #2D144D;
+  color: #030447;
   position: relative;
 }
 .sidebar-link.active::before {
@@ -126,7 +126,7 @@ h1, h2, h3, h4 {
   bottom: 4px;
   width: 3px;
   border-radius: 4px;
-  background: #2D144D;
+  background: #030447;
 }
 
 /* Topbar */

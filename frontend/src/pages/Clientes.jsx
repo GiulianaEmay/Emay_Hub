@@ -127,7 +127,7 @@ function ClientDetail({ client, onClose, onUpdate }) {
           <div className="flex gap-1 mt-4">
             {tabs.map(t=>(
               <button key={t.k} onClick={()=>setTab(t.k)} data-testid={`tab-${t.k}`}
-                className={`px-3 py-1.5 text-sm rounded-md ${tab===t.k?"bg-[#F5F3FF] text-[#2D144D] font-medium":"text-slate-500 hover:bg-slate-50"}`}>
+                className={`px-3 py-1.5 text-sm rounded-md ${tab===t.k?"bg-[#F5F3FF] text-[#030447] font-medium":"text-slate-500 hover:bg-slate-50"}`}>
                 {t.l}
               </button>
             ))}

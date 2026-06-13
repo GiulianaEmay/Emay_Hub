@@ -17,7 +17,7 @@ export default function Login() {
           backgroundImage: "radial-gradient(circle at 20% 20%, rgba(255,255,255,0.15) 0, transparent 40%), radial-gradient(circle at 80% 60%, rgba(163,139,255,0.25) 0, transparent 50%)"
         }} />
         <div className="relative z-10">
-          <img src={EMAY_LOGO_URL} alt="EMAY" className="h-24 w-auto object-contain -ml-3 mb-10 rounded-lg" />
+          <img src={EMAY_LOGO_URL} alt="EMAY" className="h-28 w-auto object-contain -ml-3 mb-10" style={{ mixBlendMode: 'screen' }} />
           <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight">
             El centro operativo<br/>de EMAY Solution
           </h1>
@@ -51,7 +51,7 @@ export default function Login() {
       <div className="flex items-center justify-center p-8 sm:p-12 bg-white">
         <div className="w-full max-w-sm">
           <div className="md:hidden flex items-center justify-center mb-10 emay-gradient rounded-xl py-4">
-            <img src={EMAY_LOGO_URL} alt="EMAY" className="h-12 w-auto object-contain" />
+            <img src={EMAY_LOGO_URL} alt="EMAY" className="h-14 w-auto object-contain" style={{ mixBlendMode: 'screen' }} />
           </div>
 
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">Bienvenido</h2>
@@ -67,7 +67,9 @@ export default function Login() {
           </button>
 
           <div className="mt-12 flex flex-col items-center">
-            <img src={EMAY_LOGO_URL} alt="EMAY" className="h-16 w-auto rounded-lg shadow-sm" />
+            <div className="w-32 h-20 rounded-xl emay-gradient grid place-items-center">
+              <img src={EMAY_LOGO_URL} alt="EMAY" className="h-16 w-auto object-contain" style={{ mixBlendMode: 'screen' }} />
+            </div>
             <p className="text-[10px] text-slate-400 mt-3 uppercase tracking-[0.18em]">Integraciones & Automatizaciones</p>
           </div>
         </div>

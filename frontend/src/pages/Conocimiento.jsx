@@ -58,7 +58,7 @@ function KBForm({ initial, onClose, onSaved }) {
             <label className="text-xs font-medium text-slate-500 uppercase tracking-wider">Etiquetas</label>
             <div className="mt-1 flex flex-wrap gap-2 mb-2">
               {(form.tags||[]).map((t,i)=>(
-                <span key={i} className="bg-[#F5F3FF] text-[#2D144D] px-2 py-0.5 rounded text-xs flex items-center gap-1">
+                <span key={i} className="bg-[#F5F3FF] text-[#030447] px-2 py-0.5 rounded text-xs flex items-center gap-1">
                   {t}
                   <button type="button" onClick={()=>change("tags", form.tags.filter((_,idx)=>idx!==i))}><X className="w-3 h-3" /></button>
                 </span>
@@ -153,10 +153,10 @@ export default function Conocimiento() {
             className="bg-transparent outline-none text-sm flex-1" data-testid="kb-search" />
         </div>
         <div className="flex gap-1 flex-wrap">
-          <button onClick={()=>setCat("todos")} className={`px-3 py-1.5 text-xs rounded-md ${cat==="todos"?"bg-[#F5F3FF] text-[#2D144D] font-medium":"text-slate-500"}`}>Todos</button>
+          <button onClick={()=>setCat("todos")} className={`px-3 py-1.5 text-xs rounded-md ${cat==="todos"?"bg-[#F5F3FF] text-[#030447] font-medium":"text-slate-500"}`}>Todos</button>
           {CATS.map(c=>(
             <button key={c.k} onClick={()=>setCat(c.k)}
-              className={`px-3 py-1.5 text-xs rounded-md ${cat===c.k?"bg-[#F5F3FF] text-[#2D144D] font-medium":"text-slate-500"}`}>
+              className={`px-3 py-1.5 text-xs rounded-md ${cat===c.k?"bg-[#F5F3FF] text-[#030447] font-medium":"text-slate-500"}`}>
               {c.l}
             </button>
           ))}

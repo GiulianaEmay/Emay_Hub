@@ -27,7 +27,7 @@ export default function Configuracion() {
           <h3 className="text-base font-semibold mb-2">EMAY Solution</h3>
           <p className="text-sm text-slate-500">Plataforma operativa interna. Versión 1.0 MVP.</p>
           <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
-            <div><div className="text-xs text-slate-400 uppercase">Color principal</div><div className="flex items-center gap-2 mt-1"><div className="w-5 h-5 rounded bg-[#2D144D]"/> #2D144D</div></div>
+            <div><div className="text-xs text-slate-400 uppercase">Color principal</div><div className="flex items-center gap-2 mt-1"><div className="w-5 h-5 rounded bg-[#030447]"/> #030447</div></div>
             <div><div className="text-xs text-slate-400 uppercase">Acento</div><div className="flex items-center gap-2 mt-1"><div className="w-5 h-5 rounded bg-[#6D4CC9]"/> #6D4CC9</div></div>
           </div>
         </div>

@@ -102,8 +102,8 @@ export default function Layout() {
     <div className="min-h-screen bg-[#FAFAFB] flex">
       {/* Sidebar */}
       <aside className="w-[260px] shrink-0 bg-white border-r border-slate-100 flex flex-col" data-testid="sidebar">
-        <div className="px-3 py-3 flex items-center justify-center border-b border-slate-100 emay-gradient">
-          <img src={EMAY_LOGO_URL} alt="EMAY HUB" className="h-14 w-auto object-contain" />
+        <div className="px-3 py-4 flex items-center justify-center emay-gradient">
+          <img src={EMAY_LOGO_URL} alt="EMAY HUB" className="h-16 w-auto object-contain" style={{ mixBlendMode: 'screen' }} />
         </div>
         <nav className="flex-1 px-3 py-4 space-y-0.5 thin-scroll overflow-y-auto">
           {nav.map(n => (

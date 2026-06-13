@@ -1,6 +1,6 @@
 import React from "react";
 
-export function StatCard({ label, value, icon: Icon, trend, accent = "#2D144D", testid }) {
+export function StatCard({ label, value, icon: Icon, trend, accent = "#030447", testid }) {
   return (
     <div className="emay-card p-5" data-testid={testid}>
       <div className="flex items-start justify-between">
@@ -37,7 +37,7 @@ export function SectionTitle({ title, subtitle, action }) {
 
 export function Pill({ children, color = "purple" }) {
   const colors = {
-    purple: "bg-[#F5F3FF] text-[#2D144D]",
+    purple: "bg-[#F5F3FF] text-[#030447]",
     green: "bg-emerald-50 text-emerald-700",
     blue: "bg-sky-50 text-sky-700",
     orange: "bg-amber-50 text-amber-700",
@@ -62,8 +62,8 @@ export function EmptyState({ title, subtitle, action }) {
 
 export function Btn({ children, variant = "primary", className = "", ...props }) {
   const variants = {
-    primary: "bg-[#2D144D] text-white hover:bg-[#4B2E83] shadow-sm",
-    secondary: "bg-[#F5F3FF] text-[#2D144D] hover:bg-[#EAE5FF]",
+    primary: "bg-[#030447] text-white hover:bg-[#340b5b] shadow-sm",
+    secondary: "bg-[#F5F3FF] text-[#030447] hover:bg-[#EAE5FF]",
     outline: "border border-slate-200 text-slate-700 hover:bg-slate-50",
     ghost: "text-slate-600 hover:bg-slate-100",
     danger: "bg-rose-600 text-white hover:bg-rose-700",

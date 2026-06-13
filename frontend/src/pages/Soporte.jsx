@@ -128,10 +128,10 @@ export default function Soporte() {
       />
 
       <div className="flex gap-2 mb-4 flex-wrap">
-        <button onClick={()=>setFilter("todos")} className={`px-3 py-1.5 text-xs rounded-md ${filter==="todos"?"bg-[#F5F3FF] text-[#2D144D] font-medium":"text-slate-500"}`}>Todos ({items.length})</button>
+        <button onClick={()=>setFilter("todos")} className={`px-3 py-1.5 text-xs rounded-md ${filter==="todos"?"bg-[#F5F3FF] text-[#030447] font-medium":"text-slate-500"}`}>Todos ({items.length})</button>
         {ESTADOS.map(e=>(
           <button key={e.k} onClick={()=>setFilter(e.k)}
-            className={`px-3 py-1.5 text-xs rounded-md ${filter===e.k?"bg-[#F5F3FF] text-[#2D144D] font-medium":"text-slate-500"}`}>
+            className={`px-3 py-1.5 text-xs rounded-md ${filter===e.k?"bg-[#F5F3FF] text-[#030447] font-medium":"text-slate-500"}`}>
             {e.l} ({items.filter(t=>t.estado===e.k).length})
           </button>
         ))}

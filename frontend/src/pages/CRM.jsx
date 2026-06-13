@@ -282,7 +282,7 @@ export default function CRM() {
                       <div className="text-sm font-semibold text-slate-800 truncate">{c.empresa}</div>
                       <div className="text-xs text-slate-500 mt-0.5 truncate">{c.contacto_nombre || "—"}</div>
                       <div className="flex items-center justify-between mt-3">
-                        <div className="text-xs font-medium text-[#2D144D]">$ {(c.valor_estimado||0).toLocaleString()}</div>
+                        <div className="text-xs font-medium text-[#030447]">$ {(c.valor_estimado||0).toLocaleString()}</div>
                         <div className="text-[10px] text-slate-400">{c.probabilidad}%</div>
                       </div>
                     </div>

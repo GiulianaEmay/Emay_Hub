@@ -10,7 +10,7 @@ import {
   PieChart, Pie, Cell, Legend
 } from "recharts";
 
-const COLORS = ["#2D144D", "#4B2E83", "#6D4CC9", "#A38BFF", "#C7B8FF", "#E2DAFA", "#F5F3FF"];
+const COLORS = ["#030447", "#340b5b", "#6D4CC9", "#A38BFF", "#C7B8FF", "#E2DAFA", "#F5F3FF"];
 const ETAPA_LABELS = {
   prospecto: "Prospecto", contactado: "Contactado", reunion: "Reunión",
   diagnostico: "Diagnóstico", propuesta: "Propuesta", negociacion: "Negociación",
@@ -21,7 +21,7 @@ const PROJ_LABELS = {
   qa: "QA", implementacion: "Implementación", capacitacion: "Capacitación", cerrado: "Cerrado"
 };
 
-function MiniKPI({ label, value, icon: Icon, testid, accent = "#2D144D" }) {
+function MiniKPI({ label, value, icon: Icon, testid, accent = "#030447" }) {
   return (
     <div className="emay-card px-4 py-3 flex items-center gap-3" data-testid={testid}>
       <div className="w-9 h-9 rounded-md bg-[#F5F3FF] grid place-items-center shrink-0" style={{ color: accent }}>
@@ -74,12 +74,12 @@ export default function Dashboard() {
       {/* KPIs - 4 cols, 2 rows compact */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <MiniKPI label="Prospectos" value={stats.prospectos_total} icon={Sparkles} testid="kpi-prospectos" accent="#6D4CC9" />
-        <MiniKPI label="Negociaciones" value={stats.negociaciones} icon={TrendingUp} testid="kpi-negociaciones" accent="#4B2E83" />
-        <MiniKPI label="Clientes activos" value={stats.clientes_activos} icon={Building2} testid="kpi-clientes" accent="#2D144D" />
+        <MiniKPI label="Negociaciones" value={stats.negociaciones} icon={TrendingUp} testid="kpi-negociaciones" accent="#340b5b" />
+        <MiniKPI label="Clientes activos" value={stats.clientes_activos} icon={Building2} testid="kpi-clientes" accent="#030447" />
         <MiniKPI label="Proyectos activos" value={stats.proyectos_activos} icon={Briefcase} testid="kpi-proyectos" accent="#6D4CC9" />
         <MiniKPI label="Tareas pendientes" value={stats.tareas_pendientes} icon={ListTodo} testid="kpi-tareas" accent="#A38BFF" />
-        <MiniKPI label="Tickets abiertos" value={stats.tickets_abiertos} icon={LifeBuoy} testid="kpi-tickets" accent="#4B2E83" />
-        <MiniKPI label="Ventas estimadas" value={`$ ${Number(stats.ventas_estimadas).toLocaleString()}`} icon={DollarSign} testid="kpi-ventas" accent="#2D144D" />
+        <MiniKPI label="Tickets abiertos" value={stats.tickets_abiertos} icon={LifeBuoy} testid="kpi-tickets" accent="#340b5b" />
+        <MiniKPI label="Ventas estimadas" value={`$ ${Number(stats.ventas_estimadas).toLocaleString()}`} icon={DollarSign} testid="kpi-ventas" accent="#030447" />
         <MiniKPI label="Equipo activo" value={stats.team_productivity.length || 0} icon={UsersRound} testid="kpi-team" accent="#6D4CC9" />
       </div>
 
@@ -157,7 +157,7 @@ export default function Dashboard() {
                   <XAxis type="number" tick={{ fontSize: 10, fill: "#6B7280" }} allowDecimals={false} axisLine={false} tickLine={false} />
                   <YAxis type="category" dataKey="miembro" tick={{ fontSize: 10, fill: "#6B7280" }} width={90} axisLine={false} tickLine={false} />
                   <RTooltip />
-                  <Bar dataKey="completadas" fill="#2D144D" radius={[0,4,4,0]} maxBarSize={18} />
+                  <Bar dataKey="completadas" fill="#030447" radius={[0,4,4,0]} maxBarSize={18} />
                 </BarChart>
               </ResponsiveContainer>
             )}

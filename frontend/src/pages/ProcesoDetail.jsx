@@ -159,7 +159,7 @@ export default function ProcesoDetail() {
       <div className="flex gap-1 mb-4 border-b border-slate-100 overflow-x-auto thin-scroll">
         {tabs.map(t=>(
           <button key={t.k} onClick={()=>setTab(t.k)} data-testid={`tab-${t.k}`}
-            className={`flex items-center gap-1.5 px-3 py-2 text-sm border-b-2 ${tab===t.k?"border-[#2D144D] text-[#2D144D] font-medium":"border-transparent text-slate-500"}`}>
+            className={`flex items-center gap-1.5 px-3 py-2 text-sm border-b-2 ${tab===t.k?"border-[#030447] text-[#030447] font-medium":"border-transparent text-slate-500"}`}>
             <t.icon className="w-4 h-4" /> {t.l}
           </button>
         ))}
@@ -171,7 +171,7 @@ export default function ProcesoDetail() {
             {(proc.messages||[]).map((m,i)=>(
               <div key={i} className={`flex ${m.role==="user"?"justify-end":"justify-start"}`}>
                 <div className={`max-w-[75%] px-4 py-2.5 rounded-2xl text-sm ${
-                  m.role==="user" ? "bg-[#2D144D] text-white rounded-br-sm" : "bg-[#F5F3FF] text-[#2D144D] rounded-bl-sm"
+                  m.role==="user" ? "bg-[#030447] text-white rounded-br-sm" : "bg-[#F5F3FF] text-[#030447] rounded-bl-sm"
                 }`}>
                   {m.content.split('\n').map((line,idx)=>(
                     <div key={idx}>{line || "\u00A0"}</div>
@@ -216,8 +216,8 @@ export default function ProcesoDetail() {
           {!s.sipoc ? <div className="text-sm text-slate-400 text-center py-12">Genera la documentación para ver el SIPOC.</div> : (
             <div className="grid grid-cols-5 gap-3">
               {[
-                ["Suppliers", s.sipoc.suppliers, "#2D144D"],
-                ["Inputs", s.sipoc.inputs, "#4B2E83"],
+                ["Suppliers", s.sipoc.suppliers, "#030447"],
+                ["Inputs", s.sipoc.inputs, "#340b5b"],
                 ["Process", s.sipoc.process, "#6D4CC9"],
                 ["Outputs", s.sipoc.outputs, "#A38BFF"],
                 ["Customers", s.sipoc.customers, "#C7B8FF"],
