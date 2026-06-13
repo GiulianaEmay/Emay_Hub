@@ -1,0 +1,141 @@
+{
+  "brand": {
+    "name": "EMAY HUB",
+    "company": "EMAY Solution",
+    "theme_preference": "light_primary_with_dark_mode",
+    "archetype": "4 (Swiss & High-Contrast) + 5 (Luxury Corporate)",
+    "logo": {
+      "text": "EMAY",
+      "subtitle": "INTEGRACIONES & AUTOMATIZACIONES",
+      "style": "White geometric/futuristic letters on #2D144D to #4B2E83 gradient background."
+    }
+  },
+  "typography": {
+    "font_families": {
+      "headings": "'Cabinet Grotesk', sans-serif",
+      "body": "'Geist', 'Manrope', sans-serif",
+      "mono": "'JetBrains Mono', monospace"
+    },
+    "installation": "Use Fontsource or Google Fonts to import Cabinet Grotesk (headings) and Geist/Manrope (body).",
+    "rules": {
+      "h1": "text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white",
+      "h2": "text-2xl sm:text-3xl font-semibold tracking-tight text-slate-900 dark:text-white",
+      "h3": "text-xl font-medium tracking-tight text-slate-800 dark:text-slate-100",
+      "body": "text-sm text-slate-600 dark:text-slate-300 leading-relaxed",
+      "labels": "text-xs font-medium uppercase tracking-[0.05em] text-slate-500 dark:text-slate-400"
+    }
+  },
+  "colors": {
+    "light": {
+      "primary": "#2D144D",
+      "primary_hover": "#4B2E83",
+      "primary_foreground": "#FFFFFF",
+      "secondary": "#4B2E83",
+      "accent_1": "#6D4CC9",
+      "accent_2": "#A38BFF",
+      "background": "#FDFDFD",
+      "surface": "#FFFFFF",
+      "surface_subtle": "#F5F3FF",
+      "border": "#EAEAEA",
+      "text_main": "#111827",
+      "text_muted": "#6B7280",
+      "sidebar_bg": "#FFFFFF",
+      "sidebar_border": "#F3F4F6",
+      "status": {
+        "success": "#10B981",
+        "warning": "#F59E0B",
+        "error": "#EF4444",
+        "info": "#3B82F6"
+      }
+    },
+    "dark": {
+      "primary": "#A38BFF",
+      "primary_hover": "#6D4CC9",
+      "primary_foreground": "#000000",
+      "background": "#0A0A0A",
+      "surface": "#141414",
+      "surface_subtle": "#2D144D",
+      "border": "#262626",
+      "text_main": "#F9FAFB",
+      "text_muted": "#9CA3AF",
+      "sidebar_bg": "#0A0A0A",
+      "sidebar_border": "#262626"
+    }
+  },
+  "spacing_and_layout": {
+    "sidebar": {
+      "width": "260px",
+      "state": "fixed",
+      "design": "Clean, minimal. Active state uses subtle purple background (#F5F3FF) with #2D144D text and a left-border accent."
+    },
+    "topbar": {
+      "height": "64px",
+      "design": "Sticky, glassmorphism (backdrop-blur-md bg-white/70) with a delicate bottom border."
+    },
+    "content_area": {
+      "padding": "p-6 sm:p-8",
+      "max_width": "max-w-7xl mx-auto"
+    },
+    "border_radius": {
+      "card": "rounded-xl",
+      "button": "rounded-lg",
+      "input": "rounded-md",
+      "badge": "rounded-full"
+    },
+    "shadows": {
+      "card": "shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)]",
+      "card_hover": "shadow-[0_8px_30px_-4px_rgba(45,20,77,0.15)]",
+      "dropdown": "shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)]",
+      "modal": "shadow-[0_20px_60px_-15px_rgba(45,20,77,0.2)]"
+    }
+  },
+  "components_design": {
+    "cards": {
+      "style": "Flat surface, very subtle border (1px solid #EAEAEA), crisp typography. No heavy shadows unless hovered (Linear style).",
+      "padding": "p-6"
+    },
+    "buttons": {
+      "primary": "bg-[#2D144D] text-white hover:bg-[#4B2E83] transition-colors shadow-sm",
+      "secondary": "bg-[#F5F3FF] text-[#2D144D] hover:bg-[#EAE5FF] transition-colors",
+      "outline": "border border-[#EAEAEA] text-[#2D144D] hover:bg-slate-50 transition-colors"
+    },
+    "kanban_board": {
+      "column": "bg-slate-50/50 dark:bg-[#141414] rounded-lg p-3 min-w-[300px]",
+      "card": "bg-white dark:bg-[#202020] p-4 rounded-md shadow-sm border border-slate-200 dark:border-slate-800 cursor-grab hover:border-[#6D4CC9] transition-all",
+      "tags": "px-2 py-1 text-xs font-medium rounded bg-[#F5F3FF] text-[#2D144D]"
+    },
+    "tables": {
+      "style": "Stripe/Notion style. Borderless rows, subtle gray headers (text-xs uppercase), compact padding (py-3 px-4), hover state on rows (bg-slate-50)."
+    },
+    "kpi_widgets": {
+      "style": "Minimalist. Value is large (text-3xl font-semibold text-[#2D144D]), label is muted (text-sm text-slate-500). Sparkline chart or trend indicator (+5.2%) in success color."
+    },
+    "ai_chat": {
+      "style": "Conversational UI. User bubbles: bg-[#F5F3FF] text-[#2D144D]. AI bubbles: bg-white border border-slate-200 text-slate-700. Markdown support. Smooth transitions."
+    },
+    "login_page": {
+      "layout": "Split screen or centered modal. Left/Background: Deep gradient from #2D144D to #4B2E83 with subtle mesh/noise texture. Right/Foreground: Clean white card, Google OAuth button prominent."
+    }
+  },
+  "media_and_icons": {
+    "icons": {
+      "library": "lucide-react",
+      "style": "Stroke width 1.5, consistent sizing (w-5 h-5 for sidebar, w-4 h-4 for inline)."
+    },
+    "images": {
+      "avatars": [
+        "https://images.pexels.com/photos/7905813/pexels-photo-7905813.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "https://images.pexels.com/photos/19746166/pexels-photo-19746166.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      ]
+    }
+  },
+  "instructions_to_main_agent": [
+    "Use pure HTML/Tailwind for structural layouts to ensure maximum customization.",
+    "Implement Shadcn UI for complex interactives (Dropdowns, Dialogs, Selects, Tables) but heavily customize them to match the exact 'Linear/Stripe' flat, high-contrast aesthetic. Remove default Vercel look.",
+    "Data Visualizations: Use Shadcn Charts (Recharts). Primary line/bar color should be #6D4CC9, secondary #A38BFF.",
+    "Ensure `data-testid` is added to ALL interactive elements (buttons, inputs, links, kanban cards) in kebab-case format.",
+    "Implement the Kanban drag-and-drop using standard HTML5 drag and drop or a lightweight library (e.g., dnd-kit) if required by the stack.",
+    "For the AI Process Mapping visualizer, consider a canvas/flow diagram approach (like React Flow) styled cleanly with the brand's purple accents.",
+    "The primary color #2D144D should be used sparingly for primary actions and key typography to maintain a premium feel. Do not overuse it as a massive background block in the main app interface (except for the sidebar active states or login background)."
+  ]
+}
