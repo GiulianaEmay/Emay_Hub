@@ -65,13 +65,6 @@ export default function Login() {
             <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5h-1.9V20H24v8h11.3c-1.6 4.6-6 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.2 6.1 29.4 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 13 24 13c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.2 6.1 29.4 4 24 4c-7.9 0-14.7 4.6-18 11.3z"/><path fill="#4CAF50" d="M24 44c5.3 0 10.1-2 13.7-5.4l-6.3-5.2c-2 1.4-4.6 2.3-7.4 2.3-5.3 0-9.7-3.4-11.3-8l-6.5 5C9.2 39.4 16 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.1-4 5.4l6.3 5.2C41.3 35.6 44 30.3 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>
             Continuar con Google
           </button>
-
-          <div className="mt-12 flex flex-col items-center">
-            <div className="w-32 h-20 rounded-xl emay-gradient grid place-items-center">
-              <img src={EMAY_LOGO_URL} alt="EMAY" className="h-16 w-auto object-contain" style={{ mixBlendMode: 'screen' }} />
-            </div>
-            <p className="text-[10px] text-slate-400 mt-3 uppercase tracking-[0.18em]">Integraciones & Automatizaciones</p>
-          </div>
         </div>
       </div>
     </div>
