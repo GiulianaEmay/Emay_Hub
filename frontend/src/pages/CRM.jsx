@@ -68,7 +68,7 @@ function ProspectForm({ initial, onClose, onSaved }) {
             </div>
           ))}
           <div>
-            <label className="text-xs font-medium text-slate-500 uppercase tracking-wider">Valor estimado (USD)</label>
+            <label className="text-xs font-medium text-slate-500 uppercase tracking-wider">Valor estimado (PEN)</label>
             <input type="number" value={form.valor_estimado} onChange={e=>change("valor_estimado", parseFloat(e.target.value)||0)}
               className="mt-1 w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:border-[#6D4CC9] outline-none"
               data-testid="prospect-valor"
@@ -145,7 +145,7 @@ function ProspectDetail({ prospect, onClose, onUpdate }) {
             <div><div className="text-xs text-slate-400 uppercase">Ciudad</div>{prospect.ciudad || "—"}</div>
             <div><div className="text-xs text-slate-400 uppercase">Teléfono</div>{prospect.telefono || "—"}</div>
             <div><div className="text-xs text-slate-400 uppercase">Correo</div>{prospect.correo || "—"}</div>
-            <div><div className="text-xs text-slate-400 uppercase">Valor estimado</div>$ {(prospect.valor_estimado||0).toLocaleString()}</div>
+            <div><div className="text-xs text-slate-400 uppercase">Valor estimado</div>S/ {(prospect.valor_estimado||0).toLocaleString()}</div>
             <div><div className="text-xs text-slate-400 uppercase">Probabilidad</div>{prospect.probabilidad}%</div>
             <div className="col-span-2"><div className="text-xs text-slate-400 uppercase">Notas</div>{prospect.notas || "—"}</div>
           </div>
@@ -282,7 +282,7 @@ export default function CRM() {
                       <div className="text-sm font-semibold text-slate-800 truncate">{c.empresa}</div>
                       <div className="text-xs text-slate-500 mt-0.5 truncate">{c.contacto_nombre || "—"}</div>
                       <div className="flex items-center justify-between mt-3">
-                        <div className="text-xs font-medium text-[#030447]">$ {(c.valor_estimado||0).toLocaleString()}</div>
+                        <div className="text-xs font-medium text-[#030447]">S/ {(c.valor_estimado||0).toLocaleString()}</div>
                         <div className="text-[10px] text-slate-400">{c.probabilidad}%</div>
                       </div>
                     </div>
@@ -312,7 +312,7 @@ export default function CRM() {
                   <td className="px-4 py-3 font-medium">{p.empresa}</td>
                   <td className="px-4 py-3 text-slate-600">{p.contacto_nombre || "—"}</td>
                   <td className="px-4 py-3"><Pill color={ETAPAS.find(e=>e.key===p.etapa)?.color || "slate"}>{ETAPAS.find(e=>e.key===p.etapa)?.label}</Pill></td>
-                  <td className="px-4 py-3 text-right">$ {(p.valor_estimado||0).toLocaleString()}</td>
+                  <td className="px-4 py-3 text-right">S/ {(p.valor_estimado||0).toLocaleString()}</td>
                   <td className="px-4 py-3 text-right">{p.probabilidad}%</td>
                   <td className="px-4 py-3 text-right space-x-2">
                     <button onClick={()=>setViewing(p)} className="text-xs text-[#6D4CC9] font-medium hover:underline">Ver</button>

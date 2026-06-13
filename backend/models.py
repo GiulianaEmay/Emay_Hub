@@ -83,6 +83,7 @@ class Client(BaseModel):
     notas: Optional[str] = ""
     contactos: List[Dict[str, Any]] = []
     accesos: List[Dict[str, Any]] = []  # plataforma, url, usuario, password, api_key
+    servicios: List[Dict[str, Any]] = []  # nombre, descripcion, monto, frecuencia, estado, fecha_inicio
     indicadores: Dict[str, Any] = {}
     created_at: str = Field(default_factory=utcnow_iso)
     updated_at: str = Field(default_factory=utcnow_iso)

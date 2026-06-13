@@ -17,7 +17,6 @@ import Tareas from "@/pages/Tareas";
 import Soporte from "@/pages/Soporte";
 import Conocimiento from "@/pages/Conocimiento";
 import Equipo from "@/pages/Equipo";
-import Configuracion from "@/pages/Configuracion";
 
 function Protected({ children }) {
   const { user, loading } = useAuth();
@@ -53,7 +52,6 @@ function AppRoutes() {
         <Route path="/soporte" element={<Soporte />} />
         <Route path="/conocimiento" element={<Conocimiento />} />
         <Route path="/equipo" element={<Equipo />} />
-        <Route path="/configuracion" element={<Configuracion />} />
       </Route>
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>

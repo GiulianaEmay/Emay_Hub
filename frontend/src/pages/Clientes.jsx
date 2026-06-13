@@ -53,11 +53,6 @@ function ClientForm({ initial, onClose, onSaved }) {
               <option value="activo">Activo</option><option value="inactivo">Inactivo</option><option value="suspendido">Suspendido</option>
             </select>
           </div>
-          <div>
-            <label className="text-xs font-medium text-slate-500 uppercase tracking-wider">Ticket promedio</label>
-            <input type="number" value={form.ticket_promedio} onChange={e=>change("ticket_promedio", parseFloat(e.target.value)||0)}
-              className="mt-1 w-full px-3 py-2 rounded-md border border-slate-200 text-sm" />
-          </div>
           <div className="col-span-2">
             <label className="text-xs font-medium text-slate-500 uppercase tracking-wider">Notas</label>
             <textarea value={form.notas||""} onChange={e=>change("notas",e.target.value)} rows={3}
@@ -77,11 +72,18 @@ function ClientDetail({ client, onClose, onUpdate }) {
   const [tab, setTab] = useState("general");
   const [newAcceso, setNewAcceso] = useState({ plataforma: "", url: "", usuario: "", password: "" });
   const [newContacto, setNewContacto] = useState({ nombre: "", cargo: "", correo: "", telefono: "" });
+  const [newServicio, setNewServicio] = useState({ nombre: "", descripcion: "", monto: 0, frecuencia: "mensual", estado: "activo", fecha_inicio: "" });
   const [interactions, setInteractions] = useState([]);
 
   useEffect(()=>{
     api.get(`/interactions?cliente_id=${client.id}`).then(r=>setInteractions(r.data)).catch(()=>{});
   }, [client.id]);
+
+  const recalcIndicators = (servicios) => {
+    const activos = servicios.filter(s => s.estado === "activo");
+    const ticket = activos.length ? Math.round(activos.reduce((a,s)=>a + (parseFloat(s.monto)||0), 0) / activos.length) : 0;
+    return { servicios_activos: activos.length, ticket_promedio: ticket };
+  };
 
   const addAcceso = async () => {
     if (!newAcceso.plataforma) return;
@@ -99,10 +101,33 @@ function ClientDetail({ client, onClose, onUpdate }) {
     onUpdate();
     toast.success("Contacto agregado");
   };
+  const addServicio = async () => {
+    if (!newServicio.nombre) { toast.error("Nombre del servicio requerido"); return; }
+    const servicios = [...(client.servicios || []), { ...newServicio, monto: parseFloat(newServicio.monto)||0, id: Date.now() }];
+    const ind = recalcIndicators(servicios);
+    await api.patch(`/clients/${client.id}`, { servicios, ...ind });
+    setNewServicio({ nombre: "", descripcion: "", monto: 0, frecuencia: "mensual", estado: "activo", fecha_inicio: "" });
+    onUpdate();
+    toast.success("Servicio registrado");
+  };
+  const toggleServicio = async (id) => {
+    const servicios = (client.servicios || []).map(s => s.id === id ? { ...s, estado: s.estado === "activo" ? "pausado" : "activo" } : s);
+    const ind = recalcIndicators(servicios);
+    await api.patch(`/clients/${client.id}`, { servicios, ...ind });
+    onUpdate();
+  };
+  const deleteServicio = async (id) => {
+    const servicios = (client.servicios || []).filter(s => s.id !== id);
+    const ind = recalcIndicators(servicios);
+    await api.patch(`/clients/${client.id}`, { servicios, ...ind });
+    onUpdate();
+    toast.success("Servicio eliminado");
+  };
 
   const tabs = [
     { k: "general", l: "General" },
     { k: "contactos", l: "Contactos" },
+    { k: "servicios", l: "Servicios" },
     { k: "accesos", l: "Accesos" },
     { k: "indicadores", l: "Indicadores" },
     { k: "timeline", l: "Timeline" },
@@ -200,11 +225,84 @@ function ClientDetail({ client, onClose, onUpdate }) {
               </div>
             </div>
           )}
+          {tab === "servicios" && (
+            <div className="space-y-3">
+              <div className="bg-slate-50 rounded-lg p-4 grid grid-cols-2 gap-2">
+                <input placeholder="Nombre del servicio" value={newServicio.nombre} onChange={e=>setNewServicio({...newServicio, nombre: e.target.value})}
+                  className="col-span-2 px-3 py-2 rounded-md border border-slate-200 text-sm bg-white" data-testid="servicio-nombre" />
+                <textarea placeholder="Descripción / alcance" value={newServicio.descripcion} onChange={e=>setNewServicio({...newServicio, descripcion: e.target.value})}
+                  rows={2} className="col-span-2 px-3 py-2 rounded-md border border-slate-200 text-sm bg-white resize-none" />
+                <div>
+                  <label className="text-[10px] uppercase tracking-wider text-slate-500 font-medium">Monto (S/)</label>
+                  <input type="number" min="0" step="0.01" placeholder="0" value={newServicio.monto}
+                    onChange={e=>setNewServicio({...newServicio, monto: e.target.value})}
+                    className="mt-1 w-full px-3 py-2 rounded-md border border-slate-200 text-sm bg-white" data-testid="servicio-monto" />
+                </div>
+                <div>
+                  <label className="text-[10px] uppercase tracking-wider text-slate-500 font-medium">Frecuencia</label>
+                  <select value={newServicio.frecuencia} onChange={e=>setNewServicio({...newServicio, frecuencia: e.target.value})}
+                    className="mt-1 w-full px-3 py-2 rounded-md border border-slate-200 text-sm bg-white">
+                    <option value="mensual">Mensual</option>
+                    <option value="anual">Anual</option>
+                    <option value="unico">Pago único</option>
+                    <option value="por_hora">Por hora</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-[10px] uppercase tracking-wider text-slate-500 font-medium">Fecha inicio</label>
+                  <input type="date" value={newServicio.fecha_inicio}
+                    onChange={e=>setNewServicio({...newServicio, fecha_inicio: e.target.value})}
+                    className="mt-1 w-full px-3 py-2 rounded-md border border-slate-200 text-sm bg-white" />
+                </div>
+                <div>
+                  <label className="text-[10px] uppercase tracking-wider text-slate-500 font-medium">Estado</label>
+                  <select value={newServicio.estado} onChange={e=>setNewServicio({...newServicio, estado: e.target.value})}
+                    className="mt-1 w-full px-3 py-2 rounded-md border border-slate-200 text-sm bg-white">
+                    <option value="activo">Activo</option>
+                    <option value="pausado">Pausado</option>
+                    <option value="finalizado">Finalizado</option>
+                  </select>
+                </div>
+                <Btn onClick={addServicio} className="col-span-2" data-testid="save-servicio-btn"><Plus className="w-4 h-4" /> Registrar servicio</Btn>
+              </div>
+
+              <div className="space-y-2">
+                {(client.servicios || []).length === 0 && (
+                  <div className="text-center py-8">
+                    <div className="text-xs text-slate-400">Aún no hay servicios registrados</div>
+                    <div className="text-[10px] text-slate-300 mt-1">Registra los servicios contratados arriba para alimentar los indicadores.</div>
+                  </div>
+                )}
+                {(client.servicios || []).map(s => (
+                  <div key={s.id} className="flex items-start justify-between p-4 rounded-lg bg-white border border-slate-100 hover:border-[#A38BFF] transition-colors" data-testid={`servicio-row-${s.id}`}>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <div className="font-semibold text-sm text-slate-800">{s.nombre}</div>
+                        <Pill color={s.estado==="activo"?"green":s.estado==="pausado"?"orange":"slate"}>{s.estado}</Pill>
+                      </div>
+                      {s.descripcion && <div className="text-xs text-slate-500 mt-1">{s.descripcion}</div>}
+                      <div className="text-[10px] text-slate-400 mt-2 uppercase tracking-wider">
+                        {s.frecuencia} · desde {s.fecha_inicio || "—"}
+                      </div>
+                    </div>
+                    <div className="text-right ml-3 shrink-0">
+                      <div className="text-base font-bold text-[#030447]">S/ {Number(s.monto||0).toLocaleString()}</div>
+                      <div className="text-[10px] text-slate-400 mb-2">/{s.frecuencia}</div>
+                      <div className="flex gap-2 justify-end">
+                        <button onClick={()=>toggleServicio(s.id)} className="text-[10px] text-slate-500 hover:text-[#030447] hover:underline">{s.estado==="activo"?"Pausar":"Activar"}</button>
+                        <button onClick={()=>deleteServicio(s.id)} className="text-[10px] text-rose-600 hover:underline">Eliminar</button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
           {tab === "indicadores" && (
             <div className="grid grid-cols-2 gap-4">
               <div className="emay-card p-4">
                 <div className="text-xs text-slate-400 uppercase">Ticket promedio</div>
-                <div className="text-2xl font-bold mt-1">$ {(client.ticket_promedio||0).toLocaleString()}</div>
+                <div className="text-2xl font-bold mt-1">S/ {(client.ticket_promedio||0).toLocaleString()}</div>
               </div>
               <div className="emay-card p-4">
                 <div className="text-xs text-slate-400 uppercase">Servicios activos</div>
@@ -297,7 +395,7 @@ export default function Clientes() {
               </div>
               <div>
                 <div className="text-slate-400 uppercase tracking-wider text-[10px]">Ticket prom.</div>
-                <div className="text-slate-700">$ {(c.ticket_promedio||0).toLocaleString()}</div>
+                <div className="text-slate-700">S/ {(c.ticket_promedio||0).toLocaleString()}</div>
               </div>
               <div>
                 <div className="text-slate-400 uppercase tracking-wider text-[10px]">Servicios</div>

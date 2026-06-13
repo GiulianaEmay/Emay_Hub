@@ -79,7 +79,7 @@ export default function Dashboard() {
         <MiniKPI label="Proyectos activos" value={stats.proyectos_activos} icon={Briefcase} testid="kpi-proyectos" accent="#6D4CC9" />
         <MiniKPI label="Tareas pendientes" value={stats.tareas_pendientes} icon={ListTodo} testid="kpi-tareas" accent="#A38BFF" />
         <MiniKPI label="Tickets abiertos" value={stats.tickets_abiertos} icon={LifeBuoy} testid="kpi-tickets" accent="#340b5b" />
-        <MiniKPI label="Ventas estimadas" value={`$ ${Number(stats.ventas_estimadas).toLocaleString()}`} icon={DollarSign} testid="kpi-ventas" accent="#030447" />
+        <MiniKPI label="Ventas estimadas" value={`S/ ${Number(stats.ventas_estimadas).toLocaleString()}`} icon={DollarSign} testid="kpi-ventas" accent="#030447" />
         <MiniKPI label="Equipo activo" value={stats.team_productivity.length || 0} icon={UsersRound} testid="kpi-team" accent="#6D4CC9" />
       </div>
 

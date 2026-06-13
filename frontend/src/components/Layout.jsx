@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import {
   LayoutDashboard, Briefcase, Workflow, ListTodo, LifeBuoy,
-  BookOpen, UserCircle2, Settings, Bell, ChevronDown, LogOut, Sparkles, Building2
+  BookOpen, UserCircle2, Bell, ChevronDown, LogOut, Sparkles, Building2
 } from "lucide-react";
 import { useAuth } from "../lib/auth";
 import { api } from "../lib/api";
@@ -17,7 +17,6 @@ const nav = [
   { to: "/soporte", label: "Soporte", icon: LifeBuoy, testid: "nav-soporte" },
   { to: "/conocimiento", label: "Conocimiento", icon: BookOpen, testid: "nav-conocimiento" },
   { to: "/equipo", label: "Equipo", icon: UserCircle2, testid: "nav-equipo" },
-  { to: "/configuracion", label: "Ajustes", icon: Settings, testid: "nav-configuracion" },
 ];
 
 export default function Layout() {
