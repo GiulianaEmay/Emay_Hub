@@ -34,6 +34,16 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(level
 logger = logging.getLogger("emayhub")
 
 EMERGENT_AUTH_URL = "https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data"
+CRM_ETAPAS = {
+    "bbdd",
+    "intento_contacto",
+    "atraccion",
+    "interaccion",
+    "conversion",
+    "no_contacto",
+    "descartado",
+    "perdido",
+}
 
 
 # ============================================================
@@ -163,6 +173,52 @@ async def create_prospect(payload: Dict[str, Any], request: Request,
     return p.model_dump()
 
 
+@api.post("/prospects/bulk-import")
+async def bulk_import_prospects(payload: Dict[str, Any], request: Request,
+                                authorization: Optional[str] = Header(None),
+                                session_token: Optional[str] = Cookie(None)):
+    """Importa prospectos en lote desde CSV. payload = {rows: [{empresa, contacto_nombre, telefono, correo, fuente, linea, ciudad, notas}], etapa?: str}"""
+    u = await get_current_user(request, authorization, session_token)
+    rows = payload.get("rows") or []
+    default_etapa = payload.get("etapa", "bbdd")
+    if not isinstance(rows, list) or not rows:
+        raise HTTPException(400, "rows requerido (array)")
+    if default_etapa not in CRM_ETAPAS:
+        raise HTTPException(400, "etapa inválida")
+    inserted = 0
+    skipped = 0
+    docs = []
+    for r in rows:
+        if not isinstance(r, dict):
+            skipped += 1
+            continue
+        try:
+            empresa = str(r.get("empresa") or "").strip()
+            if not empresa:
+                skipped += 1
+                continue
+            p = Prospect(
+                empresa=empresa,
+                contacto_nombre=str(r.get("contacto_nombre") or r.get("contacto") or "").strip(),
+                telefono=str(r.get("telefono") or "").strip(),
+                correo=str(r.get("correo") or r.get("email") or "").strip(),
+                fuente=str(r.get("fuente") or "").strip(),
+                linea=str(r.get("linea") or "").strip(),
+                ciudad=str(r.get("ciudad") or "").strip(),
+                notas=str(r.get("notas") or "").strip(),
+                responsable=u.name,
+                etapa=default_etapa,
+            )
+            docs.append(p.model_dump())
+            inserted += 1
+        except Exception:
+            skipped += 1
+    if docs:
+        await db.prospects.insert_many(docs)
+        await log_activity(u.name, "importó", "prospecto", "bulk", f"Importación masiva: {inserted} prospectos")
+    return {"inserted": inserted, "skipped": skipped, "total": len(rows)}
+
+
 @api.patch("/prospects/{pid}")
 async def update_prospect(pid: str, payload: Dict[str, Any], request: Request,
                           authorization: Optional[str] = Header(None),
@@ -184,6 +240,22 @@ async def delete_prospect(pid: str, request: Request,
     await get_current_user(request, authorization, session_token)
     await db.prospects.delete_one({"id": pid})
     return {"ok": True}
+
+
+@api.post("/prospects/{pid}/suggest-action")
+async def suggest_prospect_action(pid: str, request: Request,
+                                  authorization: Optional[str] = Header(None),
+                                  session_token: Optional[str] = Cookie(None)):
+    await get_current_user(request, authorization, session_token)
+    row = await db.prospects.find_one({"id": pid}, {"_id": 0})
+    if not row:
+        raise HTTPException(404, "Prospect not found")
+    try:
+        suggestion = await llm_service.suggest_crm_action(row)
+    except Exception as e:
+        logger.error(f"AI suggest error: {e}")
+        raise HTTPException(500, "AI service error")
+    return {"suggestion": suggestion}
 
 
 # ---- Interactions ----
@@ -667,21 +739,21 @@ async def dashboard_stats(request: Request,
                           session_token: Optional[str] = Cookie(None)):
     await get_current_user(request, authorization, session_token)
     pros_total = await db.prospects.count_documents({})
-    pros_new = await db.prospects.count_documents({"etapa": "prospecto"})
-    pros_neg = await db.prospects.count_documents({"etapa": {"$in": ["negociacion", "propuesta"]}})
+    pros_new = await db.prospects.count_documents({"etapa": {"$in": ["bbdd", "prospecto"]}})
+    pros_neg = await db.prospects.count_documents({"etapa": {"$in": ["atraccion", "interaccion", "negociacion", "propuesta"]}})
     clientes = await db.clients.count_documents({"estado": "activo"})
     projects_active = await db.projects.count_documents({"estado": {"$nin": ["cerrado"]}})
     tasks_pending = await db.tasks.count_documents({"estado": {"$in": ["pendiente", "en_proceso"]}})
     tickets_open = await db.tickets.count_documents({"estado": {"$nin": ["cerrado"]}})
 
     # Ventas estimadas (sum of probabilidad * valor_estimado/100 for non-closed)
-    ventas_cursor = db.prospects.find({"etapa": {"$nin": ["ganado", "perdido"]}}, {"_id": 0, "valor_estimado": 1, "probabilidad": 1})
+    ventas_cursor = db.prospects.find({"etapa": {"$nin": ["conversion", "ganado", "perdido", "no_contacto", "descartado"]}}, {"_id": 0, "valor_estimado": 1, "probabilidad": 1})
     ventas = 0.0
     async for row in ventas_cursor:
         ventas += (row.get("valor_estimado", 0) or 0) * (row.get("probabilidad", 0) or 0) / 100.0
 
-    # Funnel by etapa
-    etapas = ["prospecto","contactado","reunion","diagnostico","propuesta","negociacion","ganado","perdido"]
+    # Funnel by etapa (nuevo embudo EMAY)
+    etapas = ["bbdd","intento_contacto","atraccion","interaccion","conversion","no_contacto","descartado","perdido"]
     funnel = []
     for et in etapas:
         funnel.append({"etapa": et, "total": await db.prospects.count_documents({"etapa": et})})
@@ -798,9 +870,11 @@ async def seed(request: Request,
         correo="luis@innova-tech.com",
         telefono="+51 977 666 555",
         fuente="LinkedIn",
+        linea="Automatización & Digitalización",
         valor_estimado=15000,
         probabilidad=60,
-        etapa="propuesta",
+        etapa="atraccion",
+        accion_atraccion="propuesta",
         responsable=u.name,
     )
     await db.prospects.insert_one(pros.model_dump())
