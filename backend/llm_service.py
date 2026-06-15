@@ -125,3 +125,29 @@ async def generate_documentation(session_id: str, history: list) -> dict:
             "to_be": "",
             "automation_opportunities": [],
         }
+
+
+
+# ---------- CRM Action Suggestion (LOW TOKEN COST) ----------
+SYSTEM_PROMPT_CRM_ACTION = (
+    "Eres un coach comercial senior de EMAY Solution. Recibirás datos breves de un prospecto "
+    "(empresa, línea de servicio, ciudad, fuente, notas) y debes recomendar UNA acción concreta "
+    "de atracción comercial. Responde en máximo 2 frases (≤45 palabras), en español, tono directo "
+    "y accionable. Empieza con: [acción]: Propuesta | Mensaje | Correo | Reunión | Presentación. "
+    "Luego una sola línea con el porqué + canal/timing concreto. Nada más."
+)
+
+
+async def suggest_crm_action(prospect: dict) -> str:
+    """Ultra-light AI suggestion for CRM attraction phase. Minimal tokens."""
+    chat = _get_chat(f"crm_{prospect.get('id','x')}", SYSTEM_PROMPT_CRM_ACTION)
+    snippet = (
+        f"Empresa: {prospect.get('empresa','')}\n"
+        f"Línea: {prospect.get('linea','')}\n"
+        f"Ciudad: {prospect.get('ciudad','')}\n"
+        f"Fuente: {prospect.get('fuente','')}\n"
+        f"Notas: {(prospect.get('notas','') or '')[:200]}"
+    )
+    msg = UserMessage(text=snippet)
+    response = await chat.send_message(msg)
+    return (response or "").strip()
