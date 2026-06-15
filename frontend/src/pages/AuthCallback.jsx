@@ -21,6 +21,10 @@ export default function AuthCallback() {
     (async () => {
       try {
         const r = await api.post("/auth/session", { session_id });
+        // Guardar token como fallback Bearer (cookies cross-site pueden no persistir)
+        if (r.data.session_token) {
+          localStorage.setItem("emay_session_token", r.data.session_token);
+        }
         setUser(r.data.user);
         // Strip hash & redirect
         window.history.replaceState(null, "", "/dashboard");
