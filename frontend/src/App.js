@@ -34,12 +34,14 @@ function Protected({ children }) {
 function AppRoutes() {
   const location = useLocation();
   // Sync session_id detection - process auth callback before anything else
-  if (location.hash?.includes("session_id=")) {
+  // NOTE: use window.location.hash (BrowserRouter doesn't reliably expose hash via useLocation)
+  if (window.location.hash?.includes("session_id=")) {
     return <AuthCallback />;
   }
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/auth/callback" element={<AuthCallback />} />
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
       <Route element={<Protected><Layout /></Protected>}>
         <Route path="/dashboard" element={<Dashboard />} />
