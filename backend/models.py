@@ -44,7 +44,14 @@ class Prospect(BaseModel):
     responsable: Optional[str] = ""
     valor_estimado: float = 0.0
     probabilidad: int = 0
-    etapa: str = "prospecto"  # prospecto, contactado, reunion, diagnostico, propuesta, negociacion, ganado, perdido
+    etapa: str = "bbdd"  # bbdd, intento_contacto, atraccion, interaccion, conversion, no_contacto, descartado, perdido
+    # Nuevos campos del embudo
+    linea: Optional[str] = ""  # PTV+Inventario, Facturador Sunat, Automatización & Digitalización, Soporte Técnico TI, Diseño y Desarrollo Web, Carrier Pro
+    resultado_bbdd: Optional[str] = ""  # contacto, intento, no_contacto, bbdd
+    contacto_status: Optional[str] = ""  # contactado, sin_contacto
+    accion_atraccion: Optional[str] = ""  # propuesta, mensaje, correo, reunion, presentacion
+    comentario_interaccion: Optional[str] = ""
+    ticket_promedio: float = 0.0
     notas: Optional[str] = ""
     created_at: str = Field(default_factory=utcnow_iso)
     updated_at: str = Field(default_factory=utcnow_iso)
